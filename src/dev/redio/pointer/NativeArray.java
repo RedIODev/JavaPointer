@@ -15,6 +15,7 @@ public class NativeArray<T> extends NativePointer<T> implements Iterable<T> {
 
     @Override
     public Modifier<T> modify(int index) {
+        checkIndex(index);
         return super.modify(index);
     }
 
@@ -48,12 +49,14 @@ public class NativeArray<T> extends NativePointer<T> implements Iterable<T> {
 
     @Override
     public T get(int index) {
+        checkIndex(index);
         return super.get(index);
     }
 
     @Override
-    public void set(T value, int offset) {
-        super.set(value, offset);
+    public void set(T value, int index) {
+        checkIndex(index);
+        super.set(value, index);
     }
 
     
@@ -106,6 +109,11 @@ public class NativeArray<T> extends NativePointer<T> implements Iterable<T> {
             }
         }
         return new Iter();
+    }
+
+    private void checkIndex(int index) {
+        if (index >= length)
+            throw new IndexOutOfBoundsException(index);
     }
 
 }

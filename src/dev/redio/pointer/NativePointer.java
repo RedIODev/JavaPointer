@@ -67,7 +67,7 @@ public class NativePointer<T> implements Pointer<T> {
 
     @Override
     public Modifier<T> modify() {
-        return new NativeModifier<>(this);
+        return new NativeModifier<>(this,0);
     }
 
     protected Modifier<T> modify(int offset) {
