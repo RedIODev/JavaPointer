@@ -46,12 +46,12 @@ public final class Keywords {
     }
 
     public static <T> NativePointer<T> newN(Class<? super T> type) {
+        Utils.requireNativeObject(type);
         NativePointer<T> ptr = allocateMemory(type,1);
         if(type.isPrimitive()) {
             Utils.memset(ptr.address,sizeof(type),(byte) 0);
             return ptr;
         }
-        Utils.requireNativeObject(type);
         initializeNativeObject(ptr);
         return ptr;
     }
@@ -62,6 +62,14 @@ public final class Keywords {
         ptr.set(value);
         return ptr;
     }
+
+    public static <T> NativeArray<T> newNA(Class<? super T> type, int length) {
+        Utils.requireNativeObject(type);
+        long size = sizeof(type);
+        long address = Utils.getUnsafe().allocateMemory(size*length);
+        Utils.memset(address, size*length, (byte)0);
+        return new NativeArray<>(address, type, length);
+    } 
 
     public static void delete(NativePointer<?> ptr) {
         ptr.close();

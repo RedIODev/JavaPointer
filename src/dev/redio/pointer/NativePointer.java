@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NativeObject
-public final class NativePointer<T> implements Pointer<T>, Comparable<NativePointer<T>> {
+public class NativePointer<T> implements Pointer<T> {
 
     static final List<Class<?>> typeCache = new ArrayList<>();
 
@@ -21,9 +21,9 @@ public final class NativePointer<T> implements Pointer<T>, Comparable<NativePoin
         typeCache.add(short.class);
     }
 
-    long address = 0;
-    long size = 0;
-    int typeId = 0;
+    protected long address = 0;
+    protected long size = 0;
+    protected int typeId = 0;
 
     public NativePointer(long address, Class<? super T> type) {
         this.address = address;
@@ -38,7 +38,7 @@ public final class NativePointer<T> implements Pointer<T>, Comparable<NativePoin
             typeId = index;
     }
 
-    NativePointer(long address, long size, int typeId) {
+    protected NativePointer(long address, long size, int typeId) {
         this.address = address;
         this.size = size;
         this.typeId = typeId;
@@ -70,17 +70,16 @@ public final class NativePointer<T> implements Pointer<T>, Comparable<NativePoin
         return new NativeModifier<>(this);
     }
 
-    public Modifier<T> modify(int offset) {
-        return new NativeModifier<>(this,offset);
+    protected Modifier<T> modify(int offset) {
+        return new NativeModifier<>(this, offset);
     }
-
 
     public T get() {
         return get(0);
     }
 
     @SuppressWarnings("unchecked")
-    public T get(int offset) {
+    protected T get(int offset) {
         Utils.requireValidPointer(this);
         long byteOffset = offset * size;
         if(typeId <= 8)
@@ -99,7 +98,7 @@ public final class NativePointer<T> implements Pointer<T>, Comparable<NativePoin
         set(value,0);
     }
 
-    public void set(T value, int offset) {
+    protected void set(T value, int offset) {
         Utils.requireValidPointer(this);
         long byteOffset = offset * size;
         if(typeId <= 8) {
@@ -132,15 +131,7 @@ public final class NativePointer<T> implements Pointer<T>, Comparable<NativePoin
         Keywords.free(this);
     }
 
-    @Override
-    public int compareTo(NativePointer<T> ptr) {
-        long result = address - ptr.address;
-        if(result > Integer.MAX_VALUE)
-            return Integer.MAX_VALUE;
-        if(result < Integer.MIN_VALUE)
-            return Integer.MIN_VALUE;
-        return (int) result;
-    }
+   
 
     @Override
     public boolean equals(Object obj) {
@@ -148,7 +139,7 @@ public final class NativePointer<T> implements Pointer<T>, Comparable<NativePoin
             return true;
         if (obj == null)
             return false;
-        return obj instanceof NativePointer<?> nPtr && this.address == nPtr.address;
+        return obj instanceof Pointer<?> nPtr && this.address == nPtr.getAddress();
     }
 
     @Override
