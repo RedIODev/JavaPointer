@@ -9,4 +9,6 @@ public interface Pointer<T> extends Modifiable<T>, AutoCloseable {
 
     T get();
 
+    void set(T value);
+
 }

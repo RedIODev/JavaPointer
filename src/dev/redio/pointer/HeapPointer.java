@@ -33,6 +33,11 @@ public final class HeapPointer<T> implements Pointer<T> {
     }
 
     @Override
+    public void set(T value) {
+        Utils.memcopy(value, 0, ref, 0, Keywords.sizeof(ref));
+    }
+
+    @Override
     public void close() {}
     
 }

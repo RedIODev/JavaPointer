@@ -94,6 +94,7 @@ public class NativePointer<T> implements Pointer<T> {
         return heapCopy;
     }
 
+    @Override
     public void set(T value) {
         set(value,0);
     }
