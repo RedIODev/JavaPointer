@@ -12,6 +12,7 @@ public final class Pointer<T extends AbstractNativeStruct<T>> implements Address
     private final MemorySegment data;
     private final T struct;
 
+    //Public for Testing make package-private on release
     public Pointer(MemoryLayout layout, MemorySegment data, T struct) {
         this.layout = layout;
         this.data = data;
