@@ -38,11 +38,11 @@ public abstract class AbstractNativeStruct<SELF extends AbstractNativeStruct<SEL
     protected abstract SELF exactStruct(List<VarHandle> handles);
 
     private static GroupLayout createLayout(Class<?>[] types) {
-
+        return null;
     }
 
     private static List<VarHandle> createHandles(Class<?>[] types, GroupLayout structLayout) {
-
+        return null;
     }
     
 }

@@ -12,7 +12,7 @@ public final class Pointer<T extends AbstractNativeStruct<T>> implements Address
     private final MemorySegment data;
     private final T struct;
 
-    Pointer(MemoryLayout layout, MemorySegment data, T struct) {
+    public Pointer(MemoryLayout layout, MemorySegment data, T struct) {
         this.layout = layout;
         this.data = data;
         this.struct = struct;
@@ -21,13 +21,13 @@ public final class Pointer<T extends AbstractNativeStruct<T>> implements Address
     public T deref() {
         if (layout instanceof SequenceLayout)
             throw new UnsupportedOperationException("This Pointer points to an array. Use the indexed overload instead.");
-        return struct.exactStruct(handles);
+        return struct.exactStruct(null);
     }
 
     public T deref(long index) {
         if (!(layout instanceof SequenceLayout))
             throw new UnsupportedOperationException("This Pointer doesn't point to an array. Use the non indexed overload instead.");
-        return struct.exactStruct(handles);
+        return struct.exactStruct(null);
     }
 
     @Override
